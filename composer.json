@@ -1,0 +1,27 @@
+{
+  "name": "kufeisoft/form",
+  "description": "酷飞软件万能表单",
+  "keywords": ["http", "kufeisoft", "php"],
+  "homepage": "https://github.com/kufeisoft/form",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "alex.xu",
+      "email": "xux851@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "ext-gd": "*",
+    "kufeisoft/tree": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7|^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "kufeisoft\\": "src/"
+    }
+  }
+}
