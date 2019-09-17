@@ -16,11 +16,11 @@ class Form{
 		$readonly 	= 	isset($info['setup']['readonly']) ? 'readonly' : '';
 		$disabled 	= 	isset($info['setup']['disabled']) ? 'disabled' : '';
 		$class 		=	isset($info['setup']['class']) ? trim($info['setup']['class']) : 'layui-input';
-		foreach ($Category as $r){
+		foreach ($category as $r){
 			$arr 	= 	explode(",", $r['arrchildid']);
 			$show	=	0;
 			foreach((array)$arr as $rr){
-				if($Category[$rr]['moduleid'] == $moduleid) 	$show=1;
+				if($category[$rr]['moduleid'] == $moduleid) 	$show=1;
 			}
 			if(empty($show))	continue;
 			$r['disabled'] = $r['child'] ? ' disabled' :'';
