@@ -155,20 +155,39 @@ class Form{
 		return $parseStr;
 	}
 
+
+
 	/*图像框*/
 	public  static function image($info,$value){
 		$info['setup'] = is_array($info['setup']) ? $info['setup'] : json_decode($info['setup'],true);
 		$id = $field = $info['name'];
 		$validate = self::getvalidate($info['setup']);
 		$placeholder = isset($info['setup']['default']) && $info['setup']['default'] ? trim($info['setup']['default']) : '';
-		$remark  = 	isset($info['setup']['remark']) ? $info['setup']['remark'] : '';
-		$model 	=	isset($info['setup']['type']) ? isset($info['setup']['type']) : 'one';
-		$exts 	=	isset($info['setup']['exts']) ? isset($info['setup']['exts']) : 'jpg,png,gif,jpeg';
-		//$parseStr   = ' <input type="text" name="' . $field . '" placeholder="' . $placeholder . '" value="' . stripcslashes($value) . '" class="layui-input" ' . $validate . ' readonly><p class="help-block"><a class="btn btn-link" data-file="'. $model .'" data-type="' . $exts . '" data-field="' . $field . '">上传</a>|<a href="javascript:void(0)" class="btn btn-link">预览</a>' . (empty($remark) ?  ' ': '　|　' . $remark) .'</p>';
-		//$parseStr = '<a class="btn btn-link" data-file="'. $model .'" data-type="' . $exts . '" data-field="' . $field . '"><img data-tips-image id="img' . $field . '" style="height:auto;max-height:60px;min-width:60px;min-height: 60px;border:#ccc solid 1px" src="' . stripcslashes($value) . '"/></a><input type="hidden" name="' . $field . '" value="' . stripcslashes($value) . '" class="layui-input litup"  onchange="document.getElementById(\'img'. $field .'\').src=this.value;">';
-		//$parseStr   = ' <input type="text" name="' . $field . '" placeholder="' . $placeholder . '" value="' . stripcslashes($value) . '" class="layui-input" ' . $validate . '><p class="help-block">'. $remark .'</p>';
-		$parseStr 	=	'<div class="input-file-show"><span class="show"><a href="javascript:void(0)" onclick="layer.open({type: 1,shade: 0.3,title: false, content: \'<div><img src=\' + $(\'#' . $field . '\').val() + \' style=\\\'width:100%;height:auto\\\'></div>\'});" title="点击查看预览图"><i id="img_i" class="fa fa-picture-o"></i></a></span><span class="type-file-box"><input type="text" id="' . $field . '" name="' . $field . '" value="' . stripcslashes($value) . '" class="type-file-text"><input type="button" name="button" id="button1" value="选择上传..." class="type-file-button"><input class="type-file-file" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效" data-file="' . $model . '" data-type="' . $exts . '" data-field="' . $field . '"></span></div><p class="help-block">'. $remark .'</p>';
-		return $parseStr;
+		$remark  = 	$info['setup']['remark'] ?? '';
+		$exts 	=	$info['setup']['exts'] ?? 'jpg,png,gif,jpeg';
+    $parseStr =	'<div class="input-file-show input-file-box"><span class="show"><a href="javascript:void(0)" title="点击查看预览图" data-preview-image><i id="img_i" class="fa fa-picture-o"></i></a></span><span class="type-file-box"><input type="text" id="' . $field . '" data-img-val name="' . $field . '" value="' . stripcslashes($value) . '" class="type-file-text"><input type="button" name="button" id="button1" value="选择上传..." class="type-file-button"><input class="type-file-file" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效" data-file="one" data-type="' . $exts . '" data-field="' . $field . '"></span></div><p class="help-block">'. $remark . '</p>';
+    return $parseStr;
+	}
+
+	/*图像框*/
+	public static function images($info, $value){
+		$info['setup'] = is_array($info['setup']) ? $info['setup'] : json_decode($info['setup'],true);
+		$id = $field = $info['name'];
+		$validate = self::getvalidate($info['setup']);
+		$placeholder = isset($info['setup']['default']) && $info['setup']['default'] ? trim($info['setup']['default']) : '';
+		$remark  = 	$info['setup']['remark'] ?? '';
+		$model 	=	$info['setup']['type'] ?? 'one';
+		$exts 	=	$info['setup']['exts'] ?? 'jpg,png,gif,jpeg';
+    $vals = '';
+    $parseStr =	'<div class="input-file-show files input-file-box" id="' . $field . 'loader"><div class="uploader"><span class="type-file-box box-files"><input type="button" name="button" id="button1" value="选择上传..." class="type-file-button"><input class="type-file-file" size="30" hidefocus="true" nc_type="change_site_logo" title="多图上传" data-file="mtl" data-type="' . $exts . '" data-field="' . $field . '"></span></div><div class="box">';
+    if($value){
+      $vallist = explode('|', $value);
+      foreach($vallist as $val){
+        $parseStr .= '<div class="boxline"><div class="box-file-show box-files input-file-box"><span class="box-show"><a href="javascript:void(0)" title="点击查看预览图" data-preview-image><i id="img_i" class="fa fa-picture-o"></i></a></span><span class="box-type-file-box"><input type="text" data-img-val name="' . $field . '[]" value="' . $val . '" class="filebox type-file-text"><button class="type-file-button" data-image-delete title="点击删除文件"><i id="img_i" class="fa fa-times"></i></button></span></div></div>';
+      }
+    }
+    $parseStr .= '</div></div><p class="help-block">'. $remark . '</p>';
+    return $parseStr;
 	}
 
 	/*视频框*/
@@ -233,10 +252,10 @@ class Form{
 	 public static function position($info, $value, $posids=[]){
 	 	foreach($posids as $id => $title) {
       $options[] 	=	$id . '|' . $title;
-		}
+    }
 		$info['setup']	=	['option' 	=>	implode('::', $options)];
 		return self::checkbox($info, $value);
-    }
+  }
     /* 邮件测试*/
 	public static function mailtest($info,$value){
 		$info['setup'] = is_array($info['setup']) ? $info['setup'] : json_decode($info['setup'],true);
