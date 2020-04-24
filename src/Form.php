@@ -64,13 +64,13 @@ class Form{
 	}
 	/* 坐标框 */
 	public  static function point($info,$value){
-		$info['setup'] = is_array($info['setup']) ? $info['setup'] : json_decode($info['setup'], true);
+		$info['setup'] = is_array($info['setup']) ? $info['setup'] : json_decode($info['setup'],true);
 		$id = $field = $info['name'];
 		$validate = self::getvalidate($info['setup']);
 		$placeholder = isset($info['setup']['default']) && $info['setup']['default'] ? trim($info['setup']['default']) : '';
-		$remark  = isset($info['setup']['remark']) ? $info['setup']['remark'] : '';
-		$parseStr   = ' <input type="text" name="' . $field . '" data-map="point" data-name="' . $field . '" data-title="坐标选择" placeholder="' . $placeholder. '" value="' . stripcslashes($value) . '" class="layui-input" ' . $validate . '><p class="help-block">' . $remark . '</p>';
-		return $parseStr;
+		$remark  = 	$info['setup']['remark'] ?? '';
+    $parseStr =	'<div class="input-file-show input-file-box input-map-box"><span class="type-file-box"><input type="text" id="' . $field . '" data-img-val name="' . $field . '" value="' . stripcslashes($value) . '" class="type-file-text type-map-text"><input type="button" name="button" id="button1" value="选择坐标..." class="type-file-button" data-map data-field="' . $field . '"></span></div><p class="help-block">'. $remark . '</p>';
+    return $parseStr;
 	}
 	/*文本域*/
 	public  static function textarea($info,$value){
